@@ -107,16 +107,14 @@ section[data-testid="stSidebar"] {
 # ===============================
 # 📂 LOAD DATA
 # ===============================
-df = pd.read_csv("processed_trader_data.csv")
-daily = pd.read_csv("daily_metrics.csv")
+@st.cache_data
+def load_data():
+    df = pd.read_csv("processed_trader_data.csv")
+    daily = pd.read_csv("daily_metrics.csv")
+    df["pnl_size"] = df["pnl"].abs() + 1
+    return df, daily
 
-df["pnl_size"] = df["pnl"].abs() + 1
-
-# ===============================
-# 🧠 TITLE
-# ===============================
-st.markdown('<div class="title fade">🚀 Trader Intelligence Dashboard</div>', unsafe_allow_html=True)
-
+df, daily = load_data()
 # ===============================
 # 🎛️ SIDEBAR (UPGRADED)
 # ===============================
